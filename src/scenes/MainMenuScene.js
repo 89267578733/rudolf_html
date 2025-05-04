@@ -1,4 +1,3 @@
-// import Phaser from 'phaser';
 import { difficulties } from '../utils/taskGenerator';
 
 export default class MainMenuScene extends Phaser.Scene {

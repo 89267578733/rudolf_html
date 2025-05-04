@@ -1,5 +1,3 @@
-// import Phaser from 'phaser';
-
 function saveScore(name, score) {
     let records = JSON.parse(localStorage.getItem('toilet_leaderboard') || '[]');
     // Фильтруем записи гостей

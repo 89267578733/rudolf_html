@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 export default class ToiletScene extends Phaser.Scene {
     constructor() {
         super({ key: 'ToiletScene' });

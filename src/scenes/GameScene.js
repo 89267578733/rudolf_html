@@ -1,4 +1,3 @@
-// import Phaser from 'phaser';
 import { GAME } from '../config';
 import { difficulties } from '../utils/taskGenerator';
 

@@ -1,4 +1,3 @@
-// import Phaser from 'phaser';
 // import { config } from './config';
 import StartScene from './scenes/StartScene';
 import MainMenuScene from './scenes/MainMenuScene';

@@ -4,9 +4,10 @@
   "description": "A 2D browser game where Rudolf solves IT tasks in toilet cubicles",
   "main": "index.js",
   "scripts": {
-    "start": "vite",
+    "start": "npm run dev",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev": "vite"
   },
   "dependencies": {
     "phaser": "^3.70.0"

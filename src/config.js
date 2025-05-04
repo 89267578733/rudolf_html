@@ -18,4 +18,4 @@ export const GAME = {
     CUBICLE_COUNT: 5,
     PLAYER_SPEED: 200,
     TASK_TYPES: ['bug', 'sql', 'prioritization', 'algorithm', 'go-syntax', 'go-stdlib', 'go-concurrency', 'go-idioms']
-}; 
+};

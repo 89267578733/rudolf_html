@@ -1,0 +1,17 @@
+{
+  "name": "toilet-tasks-rudolf",
+  "version": "1.0.0",
+  "description": "A 2D browser game where Rudolf solves IT tasks in toilet cubicles",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.70.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+} 

@@ -8,11 +8,28 @@ export default class MainMenuScene extends Phaser.Scene {
     preload() {
         this.load.audio('menu-music', 'assets/menu-music.mp3');
         this.load.image('play', 'assets/play.png');
+        // Загрузка спрайтов мерцания
+        this.load.image('cubicle-flicker-1', 'assets/cubicle_flicker_1.png');
+        this.load.image('cubicle-flicker-2', 'assets/cubicle_flicker_2.png');
+        this.load.image('cubicle-flicker-3', 'assets/cubicle_flicker_3.png');
     }
 
     create() {
-        // Добавляем фон
-        this.add.image(400, 300, 'menu-bg').setScale(0.8).setAlpha(0.9);
+        // Фон: мерцание из трёх спрайтов
+        this.flickerImages = [
+            this.add.image(400, 300, 'cubicle-flicker-1').setScale(0.6),
+            this.add.image(400, 300, 'cubicle-flicker-2').setScale(0.6),
+            this.add.image(400, 300, 'cubicle-flicker-3').setScale(0.6)
+        ];
+        this.flickerImages.forEach((img, index) => {
+            if (index !== 0) img.setVisible(false);
+        });
+        this.time.addEvent({
+            delay: 5000,
+            callback: this.startFlicker,
+            callbackScope: this,
+            loop: true
+        });
 
         // Создаем поле ввода
         this.nameInput = document.createElement('input');
@@ -210,5 +227,35 @@ export default class MainMenuScene extends Phaser.Scene {
         if (this.nameInput) {
             this.nameInput.remove();
         }
+    }
+
+    startFlicker() {
+        const nextFlickerDelay = Phaser.Math.Between(3000, 7000);
+        this.time.addEvent({
+            delay: 50,
+            callback: () => {
+                this.flickerImages[0].setVisible(false);
+                this.flickerImages[1].setVisible(true);
+            }
+        });
+        this.time.addEvent({
+            delay: 100,
+            callback: () => {
+                this.flickerImages[1].setVisible(false);
+                this.flickerImages[2].setVisible(true);
+            }
+        });
+        this.time.addEvent({
+            delay: 150,
+            callback: () => {
+                this.flickerImages[2].setVisible(false);
+                this.flickerImages[0].setVisible(true);
+            }
+        });
+        this.time.addEvent({
+            delay: nextFlickerDelay,
+            callback: this.startFlicker,
+            callbackScope: this
+        });
     }
 } 

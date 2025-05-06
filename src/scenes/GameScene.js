@@ -8,13 +8,7 @@ export default class GameScene extends Phaser.Scene {
 
     preload() {
         // Загрузка спрайтов
-        this.load.spritesheet('rudolf-walk', 'assets/rudolf-walk.png', {
-            frameWidth: 341,
-            frameHeight: 512,
-            startFrame: 0,
-            endFrame: 5
-        });
-        this.load.image('rudolf-toilet', 'assets/rudolf_toilet.png');
+        this.load.image('rudolf-walk2', 'assets/rudolf-walk2.png');
         this.load.image('office-corridor', 'assets/office-corridor2.png');
         this.load.image('toilet', 'assets/toilet.png');
         this.load.image('developer', 'assets/developer.png');
@@ -77,25 +71,15 @@ export default class GameScene extends Phaser.Scene {
             repeat: -1
         });
 
-        // Создание анимации ходьбы Рудольфа (только если не существует)
-        if (!this.anims.exists('walk')) {
-            this.anims.create({
-                key: 'walk',
-                frames: this.anims.generateFrameNumbers('rudolf-walk', { start: 0, end: 5 }),
-                frameRate: 10,
-                repeat: -1
-            });
-        }
-
         // Игрок (фиксированная позиция)
-        this.player = this.add.sprite(400, 380, 'rudolf-walk');
-        this.player.setScale(0.72);
-        this.player.setAlpha(0.8);
-        this.player.anims.play('walk');
+        this.player = this.add.sprite(400, 380, 'rudolf-walk2');
+        this.player.setScale(0.264);
+        this.player.setDepth(10);
 
         // Звук шагов
         this.stepsSound = this.sound.add('office-steps', { loop: true, volume: 0.5 });
         this.isMoving = false;
+        this.isAnimating = false; // Флаг для отслеживания состояния анимации
 
         // Управление
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -123,10 +107,22 @@ export default class GameScene extends Phaser.Scene {
                 }
             });
             this.player.setFlipX(true);
-            this.player.anims.play('walk', true);
             if (!this.isMoving) {
                 this.stepsSound.play();
                 this.isMoving = true;
+            }
+            if (!this.isAnimating) {
+                this.isAnimating = true;
+                this.tweens.add({
+                    targets: this.player,
+                    y: this.player.y - 5, // Подпрыгивание вверх
+                    angle: 5, // Небольшой наклон
+                    yoyo: true,
+                    repeat: -1,
+                    duration: 200, // Уменьшаем длительность для более быстрой анимации
+                    ease: 'Sine.easeInOut',
+                    onUpdate: () => { console.log('y:', this.player.y, 'angle:', this.player.angle); }
+                });
             }
         } else if (this.cursors.right.isDown) {
             this.backgrounds.forEach(bg => {
@@ -137,16 +133,31 @@ export default class GameScene extends Phaser.Scene {
                 }
             });
             this.player.setFlipX(false);
-            this.player.anims.play('walk', true);
             if (!this.isMoving) {
                 this.stepsSound.play();
                 this.isMoving = true;
             }
+            if (!this.isAnimating) {
+                this.isAnimating = true;
+                this.tweens.add({
+                    targets: this.player,
+                    y: this.player.y - 5, // Подпрыгивание вверх
+                    angle: 5, // Небольшой наклон
+                    yoyo: true,
+                    repeat: -1,
+                    duration: 200, // Уменьшаем длительность для более быстрой анимации
+                    ease: 'Sine.easeInOut',
+                    onUpdate: () => { console.log('y:', this.player.y, 'angle:', this.player.angle); }
+                });
+            }
         } else {
-            this.player.anims.stop();
             if (this.isMoving) {
                 this.stepsSound.stop();
                 this.isMoving = false;
+            }
+            if (this.isAnimating) {
+                this.isAnimating = false;
+                this.tweens.killTweensOf(this.player);
             }
         }
 

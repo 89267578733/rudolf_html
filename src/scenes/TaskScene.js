@@ -42,10 +42,25 @@ export default class TaskScene extends Phaser.Scene {
         this.playerName = data.playerName;
         this.score = data.score;
         this.currentDifficulty = data.currentDifficulty || 'easy';
-        this.task = generateTask(null, this.currentDifficulty);
-        this.roundStartTime = data.roundStartTime || Date.now();
         this.tasksCompleted = data.tasksCompleted || 0;
+        this.questionsAsked = data.questionsAsked || 0; // Новый счетчик вопросов
+        this.roundStartTime = data.roundStartTime || Date.now();
         this.answerSelected = false;
+
+        // Увеличиваем счетчик вопросов
+        this.questionsAsked++;
+
+        // Логика роста сложности после каждого второго вопроса
+        const currentDiffIndex = difficulties.indexOf(this.currentDifficulty);
+        if (
+            this.questionsAsked > 1 &&
+            this.questionsAsked % 2 === 1 && // увеличиваем сложность после 2, 4, 6...
+            currentDiffIndex < difficulties.length - 1
+        ) {
+            this.currentDifficulty = difficulties[currentDiffIndex + 1];
+        }
+
+        this.task = generateTask(null, this.currentDifficulty);
 
         // Создаем объект клавиши вверх
         this.upKey = this.input.keyboard.addKey('UP');
@@ -326,11 +341,6 @@ export default class TaskScene extends Phaser.Scene {
 
         if (userAnswer === correctAnswer) {
             this.tasksCompleted++;
-            // Увеличиваем сложность при правильном ответе
-            const currentIndex = difficulties.indexOf(this.currentDifficulty);
-            if (currentIndex < difficulties.length - 1) {
-                this.currentDifficulty = difficulties[currentIndex + 1];
-            }
             this.showResult('СЮЮЮЮЮЮЮДА', true);
         } else {
             // Воспроизводим звук неправильного ответа
@@ -364,7 +374,8 @@ export default class TaskScene extends Phaser.Scene {
                     score: this.score,
                     roundStartTime: this.roundStartTime,
                     tasksCompleted: this.tasksCompleted,
-                    currentDifficulty: this.currentDifficulty
+                    currentDifficulty: this.currentDifficulty,
+                    questionsAsked: this.questionsAsked // Передаем счетчик дальше
                 });
             } else {
                 this.endRound();

@@ -37,7 +37,7 @@ export default class ToiletScene extends Phaser.Scene {
         this.sound.play('oops');
 
         // Кнопка wash над кнопкой out
-        this.washButton = this.add.image(400, 430, 'wash').setInteractive();
+        this.washButton = this.add.image(400, 400, 'wash').setInteractive();
         this.washButton.setScale(0.167);
         this.washButton.on('pointerover', () => {
             this.washButton.setScale(0.183);
@@ -47,7 +47,7 @@ export default class ToiletScene extends Phaser.Scene {
         });
 
         // Кнопка out
-        this.exitButton = this.add.image(400, 500, 'out').setInteractive();
+        this.exitButton = this.add.image(400, 520, 'out').setInteractive();
         this.exitButton.setScale(0.167);
         this.exitButton.on('pointerover', () => {
             this.exitButton.setScale(0.183);
